@@ -1,0 +1,9 @@
+{
+    "name": "financial-dashboard",
+    "scripts": {
+        "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run start:dev --prefix backend\""
+    },
+    "devDependencies": {
+        "concurrently": "^8.0.0"
+    }
+}
