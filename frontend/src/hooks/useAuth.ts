@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { auth, googleProvider } from "../firebase/config";
 import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     signInWithPopup,
     signOut,
+    onAuthStateChanged,
     type User
 } from 'firebase/auth';
 
@@ -13,6 +14,15 @@ export function useAuth() {
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState<User | null>(null);
     const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setUser(user);
+            setLoading(false);
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     const login = async (email: string, password: string) => {
         try {
