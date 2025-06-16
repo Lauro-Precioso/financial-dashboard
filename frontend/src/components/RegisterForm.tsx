@@ -7,9 +7,11 @@ export const RegisterForm = () => {
 
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [confirmPassword, setConfirmPassword] = React.useState('');
+    const [username, setUsername] = React.useState('');
 
     const handleRegister = () => {
-        register(email, password);
+        register(email, password, confirmPassword, username);
     };
 
     const handleGoogleLogin = () => {
@@ -42,6 +44,8 @@ export const RegisterForm = () => {
                     <div className='relative w-full'>
                         <input
                             type='text'
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             className='w-full border-2 border-gray-100 rounded-xl p-4 pl-12 bg-transparent'
                             placeholder='Username'
                         />
@@ -111,6 +115,8 @@ export const RegisterForm = () => {
                 <div className='mt-3'>
                     <div className="relative w-full">
                         <input
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             className="w-full border-2 border-gray-100 rounded-xl p-4 pl-12 bg-transparent"
                             placeholder="Confirm password"
                             type={showPassword.viewConfirmPassword ? 'text':'password'}

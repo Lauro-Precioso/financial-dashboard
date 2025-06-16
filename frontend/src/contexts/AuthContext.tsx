@@ -1,19 +1,36 @@
-import { useState, useEffect } from "react";
+import {
+    createContext,
+    useContext,
+    useState,
+    useEffect,
+    type ReactNode,
+} from "react";
 import { auth, googleProvider } from "../firebase/config";
-import axios from "axios";
 import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     signInWithPopup,
     signOut,
     onAuthStateChanged,
-    type User
-} from 'firebase/auth';
+    type User,
+} from "firebase/auth";
 
+// Tipagem - opcional mas recomendada
+interface AuthContextType {
+    user: User | null;
+    loading: boolean;
+    error: string | null;
+    login: (email: string, password: string) => Promise<void>;
+    register: (email: string, password: string) => Promise<void>;
+    loginWithGoogle: () => Promise<void>
+    logout: () => Promise<void>;
+}
 
-export function useAuth() {
-    const [loading, setLoading] = useState(false);
+const AuthContext = createContext<AuthContextType | null>(null);
+
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -37,26 +54,11 @@ export function useAuth() {
         }
     };
 
-    const register = async (email: string, password: string, confirmPassword: string, username: string) => {
-        setLoading(true);
-
-        if (password !== confirmPassword) {
-            setError("Password don't match.");
-            setLoading(false);
-            return;
-        }
-
+    const register = async (email: string, password: string) => {
         try{
+            setLoading(true);
             const result = await createUserWithEmailAndPassword(auth, email, password);
             setUser(result.user);
-
-            // Chamada para o backend salvar os dados no banco
-            await axios.post("http://localhost:3000/users", {
-                uid: user!.uid,
-                email: user!.email,
-                username: username,
-            });
-
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -81,13 +83,13 @@ export function useAuth() {
         setUser(null);
     };
 
-    return {
-        user,
-        loading,
-        error,
-        login,
-        register,
-        loginWithGoogle,
-        logout,
-    };
-}
+    return (
+        <AuthContext.Provider
+            value={{ user, loading, error, login, register, loginWithGoogle, logout }}
+        >
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+export { AuthContext };

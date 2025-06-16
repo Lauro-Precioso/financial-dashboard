@@ -33,15 +33,9 @@ export const LoginForm = () => {
                         id='email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className='peer w-full border-2 border-gray-100 rounded-xl p-4 pl-12 bg-transparent'
+                        className='w-full border-2 border-gray-100 rounded-xl p-4 pl-12 bg-transparent'
                         placeholder='Enter your email'
                     />
-                    <label 
-                        htmlFor='email'
-                        className='peer-placeholder-show-transparent peer-focus:top-2 peer-focus:text-sm peer-focus:text-emerald-500'
-                    >
-                        Email
-                    </label>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
