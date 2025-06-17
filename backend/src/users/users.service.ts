@@ -8,7 +8,8 @@ export class UsersService {
         return drizzleDb.select().from(users).all();
     }
 
-    async create(data: { username: string; email: string; avatarUrl: string }) {
+    async createUser(data: { uid: string; username: string; email: string; avatarUrl: string }) {
         await drizzleDb.insert(users).values(data).run();
+        return { message: 'User Created!' }
     }
 }

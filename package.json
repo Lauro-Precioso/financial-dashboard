@@ -1,12 +1,16 @@
 {
     "name": "financial-dashboard",
     "scripts": {
-        "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run start:dev --prefix backend\""
+        "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run start:dev --prefix backend\"",
+        "start:dev": "nest start --watch",
+        "start": "nest start"
     },
     "devDependencies": {
         "concurrently": "^8.0.0"
     },
     "dependencies": {
-        "axios": "^1.10.0"
+        "axios": "^1.10.0",
+        "g": "^2.0.1",
+        "nest": "^0.1.6"
     }
 }
