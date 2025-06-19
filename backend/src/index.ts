@@ -1,3 +1,3 @@
 import { drizzle } from "drizzle-orm/libsql";
 
-export const db = drizzle("file:../sqlite.db");
+const db = drizzle("file:../sqlite.db");

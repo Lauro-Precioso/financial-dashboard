@@ -1,15 +1,22 @@
 import { Injectable } from "@nestjs/common";
-import { drizzleDb } from "src/db/drizzle";
+import { db } from "src/db/drizzle";
 import { users } from '../db/schema';
 
 @Injectable()
 export class UsersService {
     async findAll() {
-        return drizzleDb.select().from(users).all();
+        return db.select().from(users).all();
     }
 
     async createUser(data: { uid: string; username: string; email: string; avatarUrl: string }) {
-        await drizzleDb.insert(users).values(data).run();
+        console.log('Creating user with data:', data);
+        const newData = {
+            uid: data.uid,
+            username: data.username,
+            email: data.email,
+            avatarUrl: data.avatarUrl,
+        } 
+        await db.insert(users).values(newData).run();
         return { message: 'User Created!' }
     }
 }
