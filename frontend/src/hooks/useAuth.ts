@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { auth, googleProvider } from "../firebase/config";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
     signInWithEmailAndPassword,
@@ -16,6 +17,8 @@ export function useAuth() {
     const [user, setUser] = useState<User | null>(null);
     const [error, setError] = useState<string | null>(null);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setUser(user);
@@ -30,6 +33,8 @@ export function useAuth() {
             setLoading(true);
             const result = await signInWithEmailAndPassword(auth, email, password);
             setUser(result.user);
+            
+            navigate('/home');
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -57,6 +62,8 @@ export function useAuth() {
                 username: username,
             });
 
+            navigate('/home');
+
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -69,6 +76,8 @@ export function useAuth() {
             setLoading(true);
             const result = await signInWithPopup(auth, googleProvider);
             setUser(result.user);
+
+            navigate('/home');
         } catch (err: any) {
             setError(err.message);
         } finally {
